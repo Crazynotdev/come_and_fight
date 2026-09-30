@@ -7,7 +7,22 @@ export default async function DamesSessionPage({ params }: { params: Promise<{ s
   const { sessionId } = await params;
   const { supabase, userId } = await getCurrentPlayer();
 
-  const { data: session } = await supabase.from("game_sessions").select("*").eq("id", sessionId).single();
+  const { data: session, error: sessionError } = await supabase
+    .from("game_sessions")
+    .select("*")
+    .eq("id", sessionId)
+    .single();
+
+  if (sessionError) {
+    // On affiche l'erreur réelle au lieu d'un 404 générique qui masque la
+    // cause (RLS, id invalide, session supprimée...).
+    return (
+      <div className="mx-auto max-w-md space-y-3 px-4 pt-10 text-center">
+        <p className="text-sm font-medium text-accent-orange">Impossible de charger cette partie</p>
+        <p className="text-xs text-white/40">{sessionError.message}</p>
+      </div>
+    );
+  }
   if (!session) notFound();
 
   const { data: players } = await supabase
