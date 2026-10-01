@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Gamepad2, Wallet, Swords, BarChart3, History, User, Settings } from "lucide-react";
+import { Home, Gamepad2, Wallet, Swords, BarChart3, History, User, Settings, Users } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { Wordmark } from "@/components/brand/Logo";
 
@@ -10,6 +10,7 @@ const items = [
   { href: "/dashboard", label: "Accueil", Icon: Home },
   { href: "/games", label: "Jeux", Icon: Gamepad2 },
   { href: "/wallet", label: "Wallet", Icon: Wallet },
+  { href: "/friends", label: "Amis", Icon: Users },
   { href: "/sessions", label: "Parties", Icon: Swords },
   { href: "/stats", label: "Statistiques", Icon: BarChart3 },
   { href: "/history", label: "Historique", Icon: History },

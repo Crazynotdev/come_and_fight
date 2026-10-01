@@ -143,3 +143,23 @@ la vraie protection).
 **Dames** : damier repeint en deux tons réels (plus lisible), vraies couronnes pour les dames
 promues (icône, plus un texte "D"). Le jeu était déjà complet côté règles (prise obligatoire, prise
 multiple, dame volante) — ce tour ne touche que le rendu visuel.
+
+## XP / niveaux / streaks, Amis, Chat (cette itération)
+
+Tout est réel, rien n'est mocké :
+
+- **XP/niveaux/streaks** : calculés automatiquement par le trigger `apply_profile_stats` à chaque
+  partie réglée (victoire +30 XP, nul +10, défaite +5 ; niveau dérivé de l'XP ; streak basé sur les
+  jours calendaires réels où l'utilisateur a joué). Visible sur `/profile` et `/leaderboard`.
+- **Amis** : demande / acceptation / refus / suppression, table `friendships` + RLS stricte (seul le
+  destinataire peut accepter/refuser). Recherche par pseudo ou ID joueur (`CF-XXXXX`).
+- **Présence en ligne** : via Supabase Realtime Presence (`lib/presence/PresenceContext.tsx`) — reflète
+  les connexions websocket réellement actives, pas une liste simulée.
+- **Chat** : table `messages`, RLS stricte (chat de partie limité aux participants de la session ;
+  messages directs limités aux amis acceptés — impossible d'écrire à un inconnu). Intégré en bottom
+  sheet dans Dames et Puissance 4, et en page dédiée (`/messages/[friendId]`) pour les amis.
+
+**Explicitement pas fait cette fois** (pour ne pas livrer du bâclé) : Échecs, Dominos, Ludo, jeux à
+physique (Billard/Bowling/Mini-golf/Carrom), badges, rematch. Ce sont des morceaux significatifs
+chacun — en particulier un moteur d'Échecs complet (roque, prise en passant, échec et mat) ou un
+moteur physique mérite sa propre itération dédiée plutôt que d'être bâclé à côté de 3 autres systèmes.

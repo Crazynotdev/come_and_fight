@@ -7,6 +7,9 @@ import { GlassButton } from "@/components/ui/GlassButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { useGameSession, type SessionRow, type PlayerRow } from "@/lib/hooks/useGameSession";
 import { legalStepsForSide, type Side } from "@/lib/games/dames/engine";
+import { MessageCircle } from "lucide-react";
+import { ChatThread } from "@/components/chat/ChatThread";
+import { GlassSheet } from "@/components/ui/GlassSheet";
 import { LogOut, TimerOff, Crown } from "lucide-react";
 import { useGameClock } from "@/lib/hooks/useGameClock";
 
@@ -30,6 +33,7 @@ export function DamesBoard({
   const myTurn = mySide !== null && session.turn === mySide && session.status === "IN_PROGRESS";
   const { remaining, expired } = useGameClock(session.turn_started_at, 60, session.status === "IN_PROGRESS");
   const [claiming, setClaiming] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const legalFromSelected = useMemo(() => {
     if (!board || !selected || mySide === null) return [];
@@ -184,9 +188,16 @@ export function DamesBoard({
         <p className="text-center text-xs text-accent-cyan">Rafle en cours — tu dois continuer avec la même pièce.</p>
       )}
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-3">
+        <GlassButton onClick={() => setChatOpen(true)}><MessageCircle size={15} />Chat</GlassButton>
         <GlassButton onClick={abandon}><LogOut size={15} />Abandonner</GlassButton>
       </div>
+
+      <GlassSheet open={chatOpen} onClose={() => setChatOpen(false)} title="Chat de partie">
+        <div className="h-[50vh]">
+          <ChatThread meId={meUserId} sessionId={sessionId} />
+        </div>
+      </GlassSheet>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export async function getCurrentPlayer() {
   return {
     supabase,
     userId: user.id,
-    profile: profile as { username: string; player_id: string; avatar_url: string | null; games_played: number; wins: number; losses: number; created_at: string } | null,
+    profile: profile as { username: string; player_id: string; avatar_url: string | null; games_played: number; wins: number; losses: number; created_at: string; xp: number; level: number; streak_count: number } | null,
     wallet: (wallet ?? { balance_available: 0, balance_reserved: 0 }) as { balance_available: number; balance_reserved: number },
   };
 }

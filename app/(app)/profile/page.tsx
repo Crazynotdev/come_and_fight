@@ -1,4 +1,4 @@
-import { Trophy, Swords, Percent } from "lucide-react";
+import { Trophy, Swords, Percent, Flame, Star } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Badge } from "@/components/ui/Badge";
@@ -22,7 +22,11 @@ export default async function ProfilePage() {
         <Avatar username={profile?.username ?? "?"} src={profile?.avatar_url} size="lg" />
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{profile?.username}</h1>
-          <Badge tone="cyan" className="mt-2">{profile?.player_id}</Badge>
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <Badge tone="cyan">{profile?.player_id}</Badge>
+            <Badge tone="orange"><Star size={11} className="mr-1 inline" />Niveau {profile?.level ?? 1}</Badge>
+          </div>
+          <p className="mt-2 text-xs text-white/40">{profile?.xp ?? 0} XP {(profile?.streak_count ?? 0) > 0 && <span className="text-accent-orange"><Flame size={11} className="mx-1 inline" />{profile?.streak_count} jours de suite</span>}</p>
           {profile?.created_at && (
             <p className="mt-3 text-xs text-white/40">Membre depuis le {new Date(profile.created_at).toLocaleDateString("fr-FR", { dateStyle: "long" })}</p>
           )}

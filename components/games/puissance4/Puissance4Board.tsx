@@ -7,6 +7,9 @@ import { GlassButton } from "@/components/ui/GlassButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { useGameSession, type SessionRow, type PlayerRow } from "@/lib/hooks/useGameSession";
 import type { Side } from "@/lib/games/shared";
+import { MessageCircle } from "lucide-react";
+import { ChatThread } from "@/components/chat/ChatThread";
+import { GlassSheet } from "@/components/ui/GlassSheet";
 import { LogOut, TimerOff } from "lucide-react";
 import { useGameClock } from "@/lib/hooks/useGameClock";
 
@@ -25,6 +28,7 @@ export function Puissance4Board({
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [claiming, setClaiming] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const me = players.find((p) => p.user_id === meUserId);
   const mySide: Side | null = me ? (me.seat === 1 ? 1 : -1) : null;
@@ -157,9 +161,16 @@ export function Puissance4Board({
 
       {error && <p className="text-center text-sm text-accent-orange">{error}</p>}
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-3">
+        <GlassButton onClick={() => setChatOpen(true)}><MessageCircle size={15} />Chat</GlassButton>
         <GlassButton onClick={abandon}><LogOut size={15} />Abandonner</GlassButton>
       </div>
+
+      <GlassSheet open={chatOpen} onClose={() => setChatOpen(false)} title="Chat de partie">
+        <div className="h-[50vh]">
+          <ChatThread meId={meUserId} sessionId={sessionId} />
+        </div>
+      </GlassSheet>
     </div>
   );
 }

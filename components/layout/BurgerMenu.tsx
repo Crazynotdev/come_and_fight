@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import {
   Menu, X, Home, Gamepad2, Swords, Trophy, Wallet, History,
-  Bell, User, Settings, LifeBuoy, ShieldCheck, Info,
+  Bell, User, Settings, LifeBuoy, ShieldCheck, Info, Users,
 } from "lucide-react";
 
 const links = [
@@ -13,6 +13,7 @@ const links = [
   { href: "/games", label: "Jeux", Icon: Gamepad2 },
   { href: "/sessions", label: "Parties", Icon: Swords },
   { href: "/leaderboard", label: "Classement", Icon: Trophy },
+  { href: "/friends", label: "Amis", Icon: Users },
   { href: "/wallet", label: "Wallet", Icon: Wallet },
   { href: "/history", label: "Historique", Icon: History },
   { href: "/notifications", label: "Notifications", Icon: Bell },
