@@ -9,8 +9,10 @@ import { useGameSession, type SessionRow, type PlayerRow } from "@/lib/hooks/use
 import type { Side } from "@/lib/games/shared";
 import { MessageCircle } from "lucide-react";
 import { ChatThread } from "@/components/chat/ChatThread";
+import { GameResultScreen } from "@/components/games/shared/GameResultScreen";
 import { GlassSheet } from "@/components/ui/GlassSheet";
 import { LogOut, TimerOff } from "lucide-react";
+import { motion } from "framer-motion";
 import { useGameClock } from "@/lib/hooks/useGameClock";
 
 interface PlayerInfo { user_id: string; username: string }
@@ -95,13 +97,7 @@ export function Puissance4Board({
   }
 
   if (session.status === "FINISHED") {
-    return (
-      <GlassCard glow className="space-y-2 p-8 text-center">
-        <p className="text-2xl font-semibold">Partie terminée</p>
-        <p className="text-sm text-white/50">Retrouve le résultat dans ton wallet et ton historique.</p>
-        <GlassButton variant="primary" className="mt-4" onClick={() => router.push("/games/puissance4")}>Nouvelle partie</GlassButton>
-      </GlassCard>
-    );
+    return <GameResultScreen sessionId={sessionId} meId={meUserId} lobbyHref="/games/puissance4" />;
   }
 
   const p1 = playerInfo.find((p) => players.find((pl) => pl.seat === 1)?.user_id === p.user_id);
@@ -147,7 +143,11 @@ export function Puissance4Board({
                 className="relative flex aspect-square items-center justify-center rounded-full bg-white/[0.05]"
               >
                 {cell !== 0 && (
-                  <span className={`h-[80%] w-[80%] rounded-full border-2 shadow-md ${
+                  <motion.span
+                    initial={{ scale: 0, y: -16 }}
+                    animate={{ scale: 1, y: 0 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 20 }}
+                    className={`h-[80%] w-[80%] rounded-full border-2 shadow-md ${
                     cell > 0 ? "border-accent-cyan/60 bg-gradient-to-br from-accent-cyan/50 to-accent-cyan/10"
                               : "border-accent-orange/60 bg-gradient-to-br from-accent-orange/50 to-accent-orange/10"
                   }`} />

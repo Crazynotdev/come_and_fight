@@ -9,8 +9,10 @@ import { useGameSession, type SessionRow, type PlayerRow } from "@/lib/hooks/use
 import { legalStepsForSide, type Side } from "@/lib/games/dames/engine";
 import { MessageCircle } from "lucide-react";
 import { ChatThread } from "@/components/chat/ChatThread";
+import { GameResultScreen } from "@/components/games/shared/GameResultScreen";
 import { GlassSheet } from "@/components/ui/GlassSheet";
 import { LogOut, TimerOff, Crown } from "lucide-react";
+import { motion } from "framer-motion";
 import { useGameClock } from "@/lib/hooks/useGameClock";
 
 interface PlayerInfo { user_id: string; username: string }
@@ -113,13 +115,7 @@ export function DamesBoard({
   }
 
   if (session.status === "FINISHED") {
-    return (
-      <GlassCard glow className="space-y-2 p-8 text-center">
-        <p className="text-2xl font-semibold">Partie terminée</p>
-        <p className="text-sm text-white/50">Retrouve le résultat dans ton wallet et ton historique.</p>
-        <GlassButton variant="primary" className="mt-4" onClick={() => router.push("/games/dames")}>Nouvelle partie</GlassButton>
-      </GlassCard>
-    );
+    return <GameResultScreen sessionId={sessionId} meId={meUserId} lobbyHref="/games/dames" />;
   }
 
   const p1 = playerInfo.find((p) => players.find((pl) => pl.seat === 1)?.user_id === p.user_id);
@@ -164,7 +160,11 @@ export function DamesBoard({
                   {isTarget && <span className="absolute h-2.5 w-2.5 rounded-full bg-accent-cyan shadow-glow" />}
                   {isSelectable && !isTarget && <span className="absolute inset-1 rounded-full ring-1 ring-accent-cyan/40" />}
                   {cell !== 0 && (
-                    <span
+                    <motion.span
+                      layout
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 28 }}
                       className={`flex h-[74%] w-[74%] items-center justify-center rounded-full border-2 shadow-[0_2px_6px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.15)] ${
                         cell > 0
                           ? "border-accent-cyan/70 bg-gradient-to-br from-accent-cyan/60 via-accent-cyan/25 to-[#0a1520]"
@@ -174,7 +174,7 @@ export function DamesBoard({
                       {(cell === 2 || cell === -2) && (
                         <Crown size={14} strokeWidth={2.5} className={cell > 0 ? "text-accent-cyan" : "text-accent-orange"} fill="currentColor" />
                       )}
-                    </span>
+                    </motion.span>
                   )}
                 </button>
               );
