@@ -17,7 +17,7 @@ export function ForgotPasswordForm() {
     e.preventDefault();
     setLoading(true); setError(null);
     const { error } = await createClient().auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
     });
     setLoading(false);
     if (error) return setError(error.message);

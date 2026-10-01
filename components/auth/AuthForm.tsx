@@ -27,7 +27,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
     if (signup) {
       const { data, error } = await supabase.auth.signUp({
-        email, password, options: { data: { username } },
+        email, password,
+        options: { data: { username }, emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
       });
       setLoading(false);
       if (error) return setError(error.message);
