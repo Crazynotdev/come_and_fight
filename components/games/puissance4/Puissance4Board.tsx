@@ -114,7 +114,7 @@ export function Puissance4Board({
       {session.status === "IN_PROGRESS" && (
         <div className="flex items-center justify-center gap-3 text-xs text-white/50">
           <span className={!myTurn && expired ? "text-accent-orange" : ""}>
-            {myTurn ? "À toi de jouer" : "Tour adverse"} · {remaining}s
+            {busy ? "Coup en cours…" : myTurn ? "À toi de jouer" : "Tour adverse"} · {remaining}s
           </span>
           {!myTurn && expired && (
             <button onClick={claimTimeout} disabled={claiming} className="flex items-center gap-1 text-accent-orange underline">
@@ -124,7 +124,7 @@ export function Puissance4Board({
         </div>
       )}
 
-      <GlassCard className="mx-auto w-full max-w-md overflow-hidden p-1.5">
+      <GlassCard className={`mx-auto w-full max-w-md overflow-hidden p-1.5 transition-opacity ${busy ? "opacity-60" : ""}`}>
         <div
           className="grid gap-1 rounded-2xl bg-white/[0.03] p-1.5"
           style={{ gridTemplateColumns: `repeat(${COLS}, 1fr)` }}
@@ -139,8 +139,8 @@ export function Puissance4Board({
                 key={i}
                 onMouseEnter={() => setHoverCol(col)}
                 onClick={() => drop(col)}
-                disabled={!myTurn}
-                className="relative flex aspect-square items-center justify-center rounded-full bg-white/[0.05]"
+                disabled={!myTurn || busy}
+                className="relative flex aspect-square items-center justify-center rounded-full bg-white/[0.05] disabled:cursor-not-allowed"
               >
                 {cell !== 0 && (
                   <motion.span

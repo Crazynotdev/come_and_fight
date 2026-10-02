@@ -132,7 +132,7 @@ export function DamesBoard({
       {session.status === "IN_PROGRESS" && (
         <div className="flex items-center justify-center gap-3 text-xs text-white/50">
           <span className={!myTurn && expired ? "text-accent-orange" : ""}>
-            {myTurn ? "À toi de jouer" : "Tour adverse"} · {remaining}s
+            {busy ? "Coup en cours…" : myTurn ? "À toi de jouer" : "Tour adverse"} · {remaining}s
           </span>
           {!myTurn && expired && (
             <button onClick={claimTimeout} disabled={claiming} className="flex items-center gap-1 text-accent-orange underline">
@@ -142,7 +142,7 @@ export function DamesBoard({
         </div>
       )}
 
-      <GlassCard className="mx-auto aspect-square w-full max-w-md overflow-hidden p-1.5">
+      <GlassCard className={`mx-auto aspect-square w-full max-w-md overflow-hidden p-1.5 transition-opacity ${busy ? "opacity-60" : ""}`}>
         <div className="grid h-full w-full grid-cols-10 grid-rows-10 overflow-hidden rounded-2xl">
           {board.map((rowArr, row) =>
             rowArr.map((cell, col) => {
@@ -153,7 +153,7 @@ export function DamesBoard({
               return (
                 <button
                   key={`${row}-${col}`}
-                  onClick={() => dark && onCellClick(row, col)}
+                  onClick={() => dark && !busy && onCellClick(row, col)}
                   className={`relative flex items-center justify-center ${dark ? "bg-[#1a1f2e]" : "bg-[#2a3142]"} ${isSelected ? "ring-2 ring-inset ring-accent-cyan" : ""}`}
                   disabled={!dark}
                 >
